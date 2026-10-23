@@ -37,6 +37,7 @@ jobs:
           ./scripts/feeds update -a
           ./scripts/feeds install -a
           ln -s "$GITHUB_WORKSPACE/oaf" package/oaf
+          ln -s "$GITHUB_WORKSPACE/open-app-filter" package/open-app-filter
           ln -s "$GITHUB_WORKSPACE/luci-app-oaf" package/luci-app-oaf
           make defconfig
 
@@ -44,6 +45,11 @@ jobs:
         run: |
           cd sdk
           make package/oaf/compile -j"$(nproc)" V=s || make package/oaf/compile V=s
+
+      - name: Build appfilter userspace daemon
+        run: |
+          cd sdk
+          make package/open-app-filter/compile -j"$(nproc)" V=s || make package/open-app-filter/compile V=s
 
       - name: Build luci-app-oaf
         run: |
@@ -53,7 +59,7 @@ jobs:
       - name: Collect ipk packages
         run: |
           mkdir -p out
-          find sdk/bin -name '*oaf*.ipk' -exec cp {} out/ \;
+          find sdk/bin -name '*.ipk' -path '*tt*' -o -name '*oaf*.ipk' -path '*packages*'|cp {} out/ ; -exec cp {} out/ \;
           ls -la out/
 
       - name: Upload artifacts
