@@ -59,7 +59,7 @@ jobs:
       - name: Collect ipk packages
         run: |
           mkdir -p out
-          find sdk/bin -name '*.ipk' -path '*tt*' -o -name '*oaf*.ipk' -path '*packages*'|cp {} out/ ; -exec cp {} out/ \;
+          find sdk/bin \( -name '*oaf*.ipk' -o -name 'appfilter*.ipk' \) -exec cp {} out/ \;
           ls -la out/
 
       - name: Upload artifacts
