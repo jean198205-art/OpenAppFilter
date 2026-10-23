@@ -13,6 +13,11 @@ jobs:
         with:
           ref: oaf-6.1
 
+      - name: Patch luci dependency (drop stale +appfilter)
+        run: |
+          sed -i 's/+appfilter //' luci-app-oaf/Makefile
+          grep LUCI_DEPENDS luci-app-oaf/Makefile
+
       - name: Install build dependencies
         run: |
           sudo apt-get update -q
@@ -33,6 +38,7 @@ jobs:
           ./scripts/feeds install -a
           ln -s "$GITHUB_WORKSPACE/oaf" package/oaf
           ln -s "$GITHUB_WORKSPACE/luci-app-oaf" package/luci-app-oaf
+          make defconfig
 
       - name: Build oaf kernel module
         run: |
