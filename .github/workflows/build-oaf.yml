@@ -23,7 +23,7 @@ jobs:
       - name: Download OpenWrt 24.10.0 SDK (qualcommax/ipq807x, kernel 6.6.73)
         run: |
           wget -q "https://downloads.openwrt.org/releases/24.10.0/targets/qualcommax/ipq807x/openwrt-sdk-24.10.0-qualcommax-ipq807x_gcc-13.3.0_musl.Linux-x86_64.tar.zst"
-          tar --zstd -xf openwrt-sdk-*.tar.zst
+          tar --zstd -xf openwrt-sdk-*.tar.zst && rm -f openwrt-sdk-*.tar.zst
           mv openwrt-sdk-* sdk
 
       - name: Prepare feeds and packages
